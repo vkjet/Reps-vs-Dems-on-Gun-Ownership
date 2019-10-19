@@ -17,6 +17,7 @@ output:
 library(ggplot2)
 library(dplyr)
 library(statsr)
+library(descr) # library for the 'expected' table. you need a 'descr' package installed from CRAN
 ```
 
 ### Load data
@@ -26,7 +27,7 @@ your data file will be called `gss`. Delete this note when before you submit
 your work. 
 
 ```{r load-data}
-load("gss.Rdata")
+load("gss")
 ```
 
 
@@ -35,25 +36,155 @@ load("gss.Rdata")
 
 ## Part 1: Data
 
+The General Social Survey data set includes 57,061 cases and 114 variables where each case represents one person. Data period spans from 1972 to 2012. There were no GSSs in 12 out of 41 years in the indicated period. The following plot shows the number of cases for each year along with the gaps when no GSSs were made.
+
+```{r echo=FALSE}
+#Add some color
+life_aquatic <- c("Azure" = "#1DACE8","Blue" = "#1C366B","Tomato" = "#F24D29","Beige" = "#E5C4A1","Silver" = "#C4CFD0")
+marcel_sport <- c("Red" = "#ed5565", "Orange" = "#f8ac59", "Baby blue" = "#c1e5ef", "Blue" = "#1799c6", "Dark blue" = "#1799c6")
+
+ggplot(gss, aes(x = year, fill = year)) + 
+geom_histogram(binwidth = 1, fill="#ed5565", colour = "#c1e5ef")
+```
+
+According to the Appendix A: Sampling Design & Weighting to the GSS Guidline (http://gss.norc.org/Pages/Faq.aspx), the vast majority of GSS data is obtained in face-to-face interviews. Computer-assisted personal interviewing (CAPI) began in the 2002 GSS. Under some conditions when it has proved difficult to arrange an in-person interview with a sampled respondent, GSS interviews may be conducted by telephone.
+
+The sampling methods had been changed several times in a 41 years period. Initial methodology used a "national stratified, multistage area probability sample of clusters of households in the continental United States". However, the most recent sampling method used is a combination of stratified sampling, clustering, and multi-stage sampling. The sample is a multi-stage area probability sample to the block or segment level. At the block level, however, quota sampling is used with quotas based on sex, age, and employment status.
+
+In the terms of this course, we deal with the **observational retrospective study** with **random sampling**. Thus, we can only make correlational conclusions in the following research. The correlation statement can be generalized to the whole population, though.
+
 
 * * *
 
 ## Part 2: Research question
 
+Among all of the variables presented in the survey, a gun ownership bothers me the most. Gun violence is one of the major social problems in the United States. Mass shootings, gun-related homicide, and nonfatal injuries rates are extremely high. United States easily 'outperforms' all high-income countries on the gun-related deaths including homicides and suicides as well. Almost 40,000 deaths by firearms happened in the US in 2017 (almost 109 people died per day). A study conducted by the Journal of the American Medical Association in 2018, states that the worldwide gun death reach 250,000 Yearly and the United States is among just six countries that make up half of those fatalities. Two obvious explanatory factors are accessibility of guns and lack of government control. Are there any personal factors that can explain such catastrophic rates?
+
+I'm far from thinking that gun possession alone makes a person more likely to shoot someone or himself. However, not having a gun at all reduces one's chances of being an initiator of a gun violence significanlty. 
+
+Creating a 'gun owner portrait' might be an ultimate goal. But in this lab I'm interested to find if certain religiuos and/or political views be the traits of a gun owner. 
+
+So the research question is: 
+**Is republican more likely to own a gun than democrat in the US?** 
 
 
 * * *
 
 ## Part 3: Exploratory data analysis
 
-NOTE: Insert code chunks as needed by clicking on the "Insert a new code chunk" 
-button (green button with orange arrow) above. Make sure that your code is visible
-in the project you submit. Delete this note when before you submit your work.
+First, that would be interesting to see a distribution of cases between different pilitical groups. The following table shows the number of respondents for each variant of political self-identification:
+
+```{r}
+gss %>%
+  group_by(partyid) %>%
+  summarise(n())
+```
+
+Surprisingly, the number of *'strong democrats' is 40% higher that the number of 'strong republicans'*. The overall number of democrats (strong and not strong combined) in this survey also way higher than those who claimed to be a republican, 21,157 cases vs 14,553 cases respectively. 
+
+Another interesting observation: there are less people on both extreme sides of a political spectre than those in the middle (either not strong democrats or not strong republicans), 14,665 persons vs 21,045 persons.
+
+The combined number of all persons who claimed being independent in their political views is less than total number of dems, reps, and other parties, 20,163 cases vs 36,031 cases respectively.
+
+Apparently, there were significant deviations in the above proportions during the different periods when the survey was made.
+
+Let's take a look at the distribution of the gun owners among different political groups. The following table shows the number of cases for the gun owners (filtered by 'owngun' variable:
+
+```{r}
+gss %>%
+  group_by(partyid) %>%
+  filter(owngun == "Yes") %>%
+  summarise(n())
+```
+
+We can see that the number of gun owners among dems is higher than among reps. However, remember that we have way more of democrats in this data set than we have republicans. We would need to compare proportions properly in the inference section. 
+
+The following heatmap shows the relationship between political self-identification and gun ownership.
+
+```{r}
+gss %>%
+  ggplot(aes(y = partyid, x = owngun)) +
+  geom_bin2d() +
+  scale_fill_gradient(low ="#1DACE8", high ="#1C366B")
+
+```
+
+Again, we can see that both strong dems and strong reps falls into same bins. But considering differencies in the number of dems and reps overall, we can't make inference based just on this plot.
+
 
 * * *
 
 ## Part 4: Inference
 
-NOTE: Insert code chunks as needed by clicking on the "Insert a new code chunk" 
-button (green button with orange arrow) above. Make sure that your code is visible
-in the project you submit. Delete this note when before you submit your work.
+First of, we want to simplify the inference process by marking strong and not strong cases with a strict definition  - 'democrat' for dems and 'republican' for reps. Similarly, we combine all independent cases into 'independent' regarless of the tendency to rep or dems. All 'Other Party' cases are marked as others. For this purpose, we duplicate the entire data set and create additional variable 'party_strict' in the copy called 'gss_guns_politics'.
+
+```{r}
+# Using nested ifelse functions we mark the partyid responses with a more strict definitions and put the output in a new variable 'party_strict'
+
+gss_guns_party <- gss %>%
+  mutate(party_strict = ifelse(partyid == "Strong Democrat" | partyid == "Not Str Democrat", "democrat", ifelse(partyid == "Strong Republican" | partyid == "Not Str Republican", "republican", ifelse(partyid == "Ind,Near Dem" | partyid == "Ind,Near Rep" | partyid == "Independent", "independent", ifelse(partyid == "Other Party", "other", NA)))))
+  
+```
+
+Now we decreased the number of politic views options from 9 to 5 (including NAs). Here's the counts summary:
+
+```{r}
+gss_guns_party %>%
+  group_by(party_strict) %>%
+  summarise(n())
+```
+
+Then, we want to clean up the data by removing NAs from both party_strict and owngun variables. Note that the 'Refused' responses is also eliminated as we're not interested in those cases.
+
+```{r}
+guns_party_clean <- gss_guns_party %>%
+  filter(!is.na(party_strict)) %>%
+  mutate(owngun = ifelse(owngun == "Refused", NA, ifelse(owngun == "No", "No", ifelse(owngun == "Yes", "Yes", NA)))) %>%
+  filter(!is.na(owngun))
+# I used this mutate plus nested ifelse construction here to wipe out 'Refused' somehow. When I used simple filter a 'Refused' response remained in the contingency table even though it had 0 reported cases. I couldn't solve this issue with other methods.
+
+gp_table <- table(guns_party_clean$party_strict, guns_party_clean$owngun)
+gp_table
+```
+
+### Chi-square test
+
+It's time to find out whether political party identification and gun ownership are  dependent. To do so, we build two hypotheses:
+
+* H_0: Political party affiliation and gun ownership are independent. 
+* H_A: Political party affiliation and gun ownership are dependent.
+
+We want to take a Chi-square test. To do so, we would need to calculate the expected counts for each case and compare them to the observed values. While some sampling variation is expected, we would expect a test statistic to closely follow a chi-square distribution. 
+
+Build a contingency table with the observed counts (values shown above) and expected counts (values shown below) first:
+```{r}
+CrossTable(gp_table, prop.r = FALSE, prop.c = FALSE, prop.t = FALSE,
+    prop.chisq = FALSE, expected = TRUE)
+```
+
+
+
+Checking conditions for the Chi-square test
+* Independence - *passed*
+  + a random sampling was used for this survey
+  + each case that contributes a count to the table is independent of all the other cases in the table
+* Sample size - *passed*
+  + each particular scenario (i.e. cell) has easily over 5 expected cases
+* Degrees of freedom > 1 - *passed*
+  + we have df = (Rows - 1) x (Columns - 1) = 3 x 1 = 3
+
+Let's run an inference function to test our hypotheses with party affiliation (*party_strict*) being an explanatory variable and gun ownership (*owngun*) being a response variable. 
+
+```{r}
+inference(y = owngun, data = guns_party_clean, x = party_strict, statistic = "proportion", type= "ht", method = "theoretical", success = "Yes", alternative = "greater", sig_level = 0.05)
+```
+
+*Plot on the left shows a Sample distribution*
+It's clear that proportion of gun owners among republicans is higher than such  proportion for all other political views groups. 
+
+*Plot on the right shows a Chi-square distribution for 3 degrees of freedom*
+Shaded area represent the p-value.
+
+With the test statistic of 334.66, significance level of 0.05, and p-value very close to zero, we can reject the null hypothesis as data provide convincing evidence that party affiliation and gun ownership are in fact dependent. It appears that gun ownership varies by political views.
+
+The next step is to find out 
