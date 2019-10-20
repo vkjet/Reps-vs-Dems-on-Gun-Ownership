@@ -22,10 +22,6 @@ library(descr) # library for the 'expected' table. you need a 'descr' package in
 
 ### Load data
 
-Make sure your data and R Markdown files are in the same directory. When loaded
-your data file will be called `gss`. Delete this note when before you submit 
-your work. 
-
 ```{r load-data}
 load("gss")
 ```
@@ -47,9 +43,9 @@ ggplot(gss, aes(x = year, fill = year)) +
 geom_histogram(binwidth = 1, fill="#ed5565", colour = "#c1e5ef")
 ```
 
-According to the Appendix A: Sampling Design & Weighting to the GSS Guidline (http://gss.norc.org/Pages/Faq.aspx), the vast majority of GSS data is obtained in face-to-face interviews. Computer-assisted personal interviewing (CAPI) began in the 2002 GSS. Under some conditions when it has proved difficult to arrange an in-person interview with a sampled respondent, GSS interviews may be conducted by telephone.
+According to Appendix A: Sampling Design & Weighting to the GSS Guideline (http://gss.norc.org/Pages/Faq.aspx), the vast majority of GSS data is obtained in face-to-face interviews. Computer-assisted personal interviewing (CAPI) began in the 2002 GSS. Under some conditions when it has proved difficult to arrange an in-person interview with a sampled respondent, GSS interviews may be conducted by telephone.
 
-The sampling methods had been changed several times in a 41 years period. Initial methodology used a "national stratified, multistage area probability sample of clusters of households in the continental United States". However, the most recent sampling method used is a combination of stratified sampling, clustering, and multi-stage sampling. The sample is a multi-stage area probability sample to the block or segment level. At the block level, however, quota sampling is used with quotas based on sex, age, and employment status.
+The sampling methods had been changed several times in 41 years. The initial methodology used a "national stratified, multistage area probability sample of clusters of households in the continental United States". However, the most recent sampling method used is a combination of stratified sampling, clustering, and multi-stage sampling. The sample is a multi-stage area probability sample to the block or segment level. At the block level, however, quota sampling is used with quotas based on sex, age, and employment status.
 
 In the terms of this course, we deal with the **observational retrospective study** with **random sampling**. Thus, we can only make correlational conclusions in the following research. The correlation statement can be generalized to the whole population, though.
 
@@ -58,21 +54,21 @@ In the terms of this course, we deal with the **observational retrospective stud
 
 ## Part 2: Research question
 
-Among all of the variables presented in the survey, a gun ownership bothers me the most. Gun violence is one of the major social problems in the United States. Mass shootings, gun-related homicide, and nonfatal injuries rates are extremely high. United States easily 'outperforms' all high-income countries on the gun-related deaths including homicides and suicides as well. Almost 40,000 deaths by firearms happened in the US in 2017 (almost 109 people died per day). A study conducted by the Journal of the American Medical Association in 2018, states that the worldwide gun death reach 250,000 Yearly and the United States is among just six countries that make up half of those fatalities. Two obvious explanatory factors are accessibility of guns and lack of government control. Are there any personal factors that can explain such catastrophic rates?
+Among all of the variables presented in the survey, gun ownership bothers me the most. Gun violence is one of the major social problems in the United States. Mass shootings, gun-related homicide, and nonfatal injuries rates are extremely high. The United States easily 'outperforms' all high-income countries on gun-related deaths including homicides and suicides as well. Almost 40,000 deaths by firearms happened in the US in 2017 (almost 109 people died per day). A study conducted by the Journal of the American Medical Association in 2018, states that the worldwide gun death reach 250,000 Yearly and the United States is among just six countries that make up half of those fatalities. Two obvious explanatory factors are the accessibility of guns and lack of government control. Are there any personal factors that can explain such catastrophic rates?
 
-I'm far from thinking that gun possession alone makes a person more likely to shoot someone or himself. However, not having a gun at all reduces one's chances of being an initiator of a gun violence significanlty. 
+I'm far from thinking that gun possession alone makes a person more likely to shoot someone or himself. However, not having a gun at all reduces one's chances of being an initiator of a gun violence significantly. 
 
-Creating a 'gun owner portrait' might be an ultimate goal. But in this lab I'm interested to find if certain religiuos and/or political views be the traits of a gun owner. 
+Creating a 'gun owner portrait' might be the ultimate goal. But in this lab, I'm interested to find if certain political views could be the traits of a gun owner. 
 
 So the research question is: 
-**Is republican more likely to own a gun than democrat in the US?** 
+**Is a person affiliated with the Republican party more likely to own a gun than one affiliated with the Democratic party?** 
 
 
 * * *
 
 ## Part 3: Exploratory data analysis
 
-First, that would be interesting to see a distribution of cases between different pilitical groups. The following table shows the number of respondents for each variant of political self-identification:
+First, that would be interesting to see a distribution of cases between different political groups. The following table shows the number of respondents for each variant of political self-identification:
 
 ```{r}
 gss %>%
@@ -80,15 +76,15 @@ gss %>%
   summarise(n())
 ```
 
-Surprisingly, the number of *'strong democrats' is 40% higher that the number of 'strong republicans'*. The overall number of democrats (strong and not strong combined) in this survey also way higher than those who claimed to be a republican, 21,157 cases vs 14,553 cases respectively. 
+Surprisingly, the number of *'strong democrats' is 40% higher than the number of 'strong republicans'*. The overall number of democrats (strong and not strong combined) in this survey also way higher than those who claimed to be a republican, 21,157 cases vs 14,553 cases respectively. 
 
-Another interesting observation: there are less people on both extreme sides of a political spectre than those in the middle (either not strong democrats or not strong republicans), 14,665 persons vs 21,045 persons.
+Another interesting observation: there are fewer people on both extreme sides of a political specter than those in the middle (either not strong democrats or not strong republicans), 14,665 persons vs 21,045 persons.
 
-The combined number of all persons who claimed being independent in their political views is less than total number of dems, reps, and other parties, 20,163 cases vs 36,031 cases respectively.
+The combined number of all persons who claimed to be independent in their political views is less than the total number of dems, reps, and other parties, 20,163 cases vs 36,031 cases respectively.
 
 Apparently, there were significant deviations in the above proportions during the different periods when the survey was made.
 
-Let's take a look at the distribution of the gun owners among different political groups. The following table shows the number of cases for the gun owners (filtered by 'owngun' variable:
+Let's take a look at the distribution of gun owners among different political groups. The following table shows the number of cases for the gun owners (filtered by 'owngun' variable:
 
 ```{r}
 gss %>%
@@ -109,17 +105,17 @@ gss %>%
 
 ```
 
-Again, we can see that both strong dems and strong reps falls into same bins. But considering differencies in the number of dems and reps overall, we can't make inference based just on this plot.
+Again, we can see that both strong dems and strong reps fall into the same bins. But considering differences in the number of dems and reps overall, we can't make inference based just on this plot.
 
 
 * * *
 
 ## Part 4: Inference
 
-First of, we want to simplify the inference process by marking strong and not strong cases with a strict definition  - 'democrat' for dems and 'republican' for reps. Similarly, we combine all independent cases into 'independent' regarless of the tendency to rep or dems. All 'Other Party' cases are marked as others. For this purpose, we duplicate the entire data set and create additional variable 'party_strict' in the copy called 'gss_guns_politics'.
+First, we want to simplify the inference process by marking strong and not strong cases with a strict definition  - 'democrat' for dems and 'republican' for reps. Similarly, we combine all independent cases into 'independent' regardless of the tendency to rep or dems. All 'Other Party' cases are marked as others. For this purpose, we duplicate the entire data set and create an additional variable 'party_strict' in the copy called 'gss_guns_politics'.
 
 ```{r}
-# Using nested ifelse functions we mark the partyid responses with a more strict definitions and put the output in a new variable 'party_strict'
+# Using nested ifelse functions we mark the partyid responses with more strict definitions and put the output in a new variable 'party_strict'
 
 gss_guns_party <- gss %>%
   mutate(party_strict = ifelse(partyid == "Strong Democrat" | partyid == "Not Str Democrat", "democrat", ifelse(partyid == "Strong Republican" | partyid == "Not Str Republican", "republican", ifelse(partyid == "Ind,Near Dem" | partyid == "Ind,Near Rep" | partyid == "Independent", "independent", ifelse(partyid == "Other Party", "other", NA)))))
@@ -134,7 +130,7 @@ gss_guns_party %>%
   summarise(n())
 ```
 
-Then, we want to clean up the data by removing NAs from both party_strict and owngun variables. Note that the 'Refused' responses is also eliminated as we're not interested in those cases.
+Then, we want to clean up the data by removing NAs from both party_strict and owngun variables. Note that the 'Refused' responses are also eliminated as we're not interested in those cases.
 
 ```{r}
 guns_party_clean <- gss_guns_party %>%
@@ -147,12 +143,12 @@ gp_table <- table(guns_party_clean$party_strict, guns_party_clean$owngun)
 gp_table
 ```
 
-### Chi-square test
+### Chi-square test of independence
 
-It's time to find out whether political party identification and gun ownership are  dependent. To do so, we build two hypotheses:
+It's time to find out whether political party identification and gun ownership are dependent. To do so, we build two hypotheses:
 
-* H_0: Political party affiliation and gun ownership are independent. 
-* H_A: Political party affiliation and gun ownership are dependent.
+* H~0~: Political party affiliation and gun ownership are independent. 
+* H~A~: Political party affiliation and gun ownership are dependent.
 
 We want to take a Chi-square test. To do so, we would need to calculate the expected counts for each case and compare them to the observed values. While some sampling variation is expected, we would expect a test statistic to closely follow a chi-square distribution. 
 
@@ -161,8 +157,6 @@ Build a contingency table with the observed counts (values shown above) and expe
 CrossTable(gp_table, prop.r = FALSE, prop.c = FALSE, prop.t = FALSE,
     prop.chisq = FALSE, expected = TRUE)
 ```
-
-
 
 Checking conditions for the Chi-square test
 * Independence - *passed*
@@ -180,11 +174,88 @@ inference(y = owngun, data = guns_party_clean, x = party_strict, statistic = "pr
 ```
 
 *Plot on the left shows a Sample distribution*
-It's clear that proportion of gun owners among republicans is higher than such  proportion for all other political views groups. 
+The proportion of gun owners among republicans is higher than such proportion for all other political views groups. 
 
 *Plot on the right shows a Chi-square distribution for 3 degrees of freedom*
-Shaded area represent the p-value.
+The shaded area represents the p-value.
 
-With the test statistic of 334.66, significance level of 0.05, and p-value very close to zero, we can reject the null hypothesis as data provide convincing evidence that party affiliation and gun ownership are in fact dependent. It appears that gun ownership varies by political views.
+With the test statistic of 334.66, the significance level of 0.05, and the p-value very close to zero, we can reject the null hypothesis as data provide convincing evidence that party affiliation and gun ownership are in fact dependent. It appears that gun ownership varies by political views.
 
-The next step is to find out 
+
+### Difference in two proportions
+
+We found out that political affiliation and gun ownership are in fact dependent. Now we can answer our research question wether a republican is more likely to own a gun than a democrat. 
+
+What is an appropriate set of hypotheses for this study? Let p_r represent the proportion of republicans possesing guns and p_d represent the proportion of democrats owning guns.
+
+We're interested in wheter republicans are more likely to own a gun, so a one-sided test is appropriate.
+
+* H~0~: Republicans are as likely to own a gun as democrats. p~r~ - p~d~ = 0
+* H~A~: Republicans are more likely to own a gun than democrats. p~r~ - p~d~ > 0
+
+Let's filter our data set to be able to deal with these two political groups only:
+
+```{r}
+rep_dem_only <- guns_party_clean %>%
+  filter(party_strict == "republican" | party_strict == "democrat")
+```
+
+
+The following table shows the number of observations for each pair of political affiliation and gun ownership variables.
+
+```{r}
+rep_dem_table <- table(rep_dem_only$party_strict, rep_dem_only$owngun)
+rep_dem_table <- rep_dem_table[2:1, 2:1]
+rep_dem_table
+```
+
+Let's find out the observed gun ownership rates for republicans and democrats:
+
+```{r}
+rep_dem_rates <- prop.table(rep_dem_table, margin = 1)
+rep_dem_rates
+point_estimate <- rep_dem_rates[1,1] - rep_dem_rates[2,1]
+```
+
+Table above shows that around 37.8% of persons considering themselves democrats own guns (p~d~ = `r rep_dem_rates[2,1]`). Observed rate for republicans possesing a gun is 49.3% (p~r~ = `r rep_dem_rates[1,1]`).
+
+Observed difference: $\hat{p}$~r~ - $\hat{p}$~d~ = `r rep_dem_rates[1,1]` - `r rep_dem_rates[2,1]` = `r point_estimate`. Which means that the rate of gun ownership among republicans is over 11% higher than among democrats. Could this difference be explainable by chance?
+
+The following function compares two proportions RepOwnGun/TotalRep to DemOwnGun/TotalDem to find if the difference between them is statistically significant at a 95% confidence level.
+
+```{r}
+rep_vs_dem_inference <- inference(rep_dem_only, y = owngun, x = party_strict, type = "ht", statistic = "proportion", method = "theoretical", alternative = "less", conf_level = 0.95, success = "Yes", null = 0)
+
+```
+
+With the test statistics of Z=`r rep_vs_dem_inference$z` we have a p-value of `r rep_vs_dem_inference$p_value` which is very close to zero and less than the confidence level. **This p-value provides convincing evidence against the null hypothesis**. If the null hypothesis was, in fact, correct and the rate of gun ownership among republicans is the same as one for democrats, the probability of observing an 11.6% or higher difference in those rates is very close to zero. Thus, **Republicans are more likely to own a gun than Democrats**.
+
+
+### Confidence intervals
+It's clear now that **partisanship and gun ownership are dependent** and that Republicans are more likely to own guns than Democrats. But how high is this likelihood? 
+
+The survey shows an 11.6% difference for this particular sample of respondents. The true difference for the entire population of the United States might be different. We can build a confidence interval to see the range in which the true population parameter for this difference would fall.
+
+Using a confidence interval formula *point estimate* ± $z^{*}$ * SE, we come up with the following interval at a 95% confidence level:
+
+```{r}
+left <- point_estimate-qnorm(0.975)*rep_vs_dem_inference$SE
+right <- point_estimate+qnorm(0.975)*rep_vs_dem_inference$SE
+
+left
+right
+```
+
+Otherwise, we can use the following function to test of equal or given proportions with very similar results:
+
+```{r}
+prop.test(rep_dem_table, conf.level = 0.95, alternative = "two.sided")
+```
+
+We are **95% confident** that the population (here, the entire population of the US) rate of gun ownership for republicans is between **10.2% and 12.9%** higher than one for democrats.
+
+
+## Conclusion
+Data of the survey show that political views indeed correlate with gun ownership in the USA. Answering the research question, we found out that people affiliated with the republican party are 10.2% to 12.9% more likely to own a gun than those who belong to the democratic party. 
+
+For future research, that would be interesting to know if this difference has been changing significantly over time and what its current rate. 
