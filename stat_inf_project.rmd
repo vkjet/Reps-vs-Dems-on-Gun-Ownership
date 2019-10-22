@@ -23,7 +23,7 @@ library(descr) # library for the 'expected' table. you need a 'descr' package in
 ### Load data
 
 ```{r load-data}
-load("gss")
+load("gss.Rdata")
 ```
 
 
