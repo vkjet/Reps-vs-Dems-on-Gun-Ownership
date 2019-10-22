@@ -6,7 +6,13 @@ I'm far from thinking that gun possession alone makes a person more likely to sh
 
 Creating a 'gun owner portrait' might be the ultimate goal. But in this lab, I'm interested to find if certain political views could be the traits of a gun owner. 
 
-So the research question is: 
+### The research question is: 
 **Is a person affiliated with the Republican party more likely to own a gun than one affiliated with the Democratic party?** 
+
+### Results:
+
+Data of the survey show that political views indeed correlate with gun ownership in the USA. Answering the research question, we found out that people affiliated with the republican party are 10.2% to 12.9% more likely to own a gun than those who belong to the democratic party. 
+
+For future research, that would be interesting to know if this difference has been changing significantly over time and what its current rate. 
 
 Check out the R project in 'stat_inf_project.rmd' file.
