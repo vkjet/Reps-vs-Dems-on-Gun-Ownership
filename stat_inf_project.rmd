@@ -252,7 +252,9 @@ Otherwise, we can use the following function to test of equal or given proportio
 prop.test(rep_dem_table, conf.level = 0.95, alternative = "two.sided")
 ```
 
-We are **95% confident** that the population (here, the entire population of the US) rate of gun ownership for republicans is between **10.2% and 12.9%** higher than one for democrats.
+We are **95% confident** that the population (here, the entire population of the US) rate of gun ownership for republicans is between **10.2% and 12.9%** higher than one for democrats. 
+
+As the 0% difference doesn't fall into this interval, we conclude that there's in fact difference for the proportions of party affiliation and gun ownership views. This perfectly matches the findings of the hypothesis test above. 
 
 
 ## Conclusion
