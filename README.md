@@ -18,4 +18,4 @@ For future research, that would be interesting to know if this difference has be
 
 
 
-*Check out the R project in 'stat_inf_project.rmd' file.*
+[Check out the R project output here](http://vkjet.github.io/Reps-vs-Dems-on-Gun-Ownership/stat_inf_project.html)
